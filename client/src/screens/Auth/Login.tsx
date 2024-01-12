@@ -12,12 +12,13 @@ import {
 } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../state/apis/apiSlice';
 import { login } from '../../state/features/auth';
 import { useAppDispatch } from '../../state/hooks/useAppDispatch';
 import { UserLoginData, userLoginSchema } from '../../validations/users';
 import Copyright from './Copyright';
+import Link from './Link';
 
 const Login = () => {
   const navigate = useNavigate();
