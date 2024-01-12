@@ -1,15 +1,9 @@
 import TrashCan from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import { Note as NoteData } from '../../state/apis/apiSlice.types';
+import EyeIcon from '@mui/icons-material/Visibility';
+import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import Markdown from 'react-markdown';
+import { Note as NoteData } from '../../state/apis/apiSlice.types';
 
 type Props = NoteData;
 
@@ -17,12 +11,21 @@ const Note = ({ title, description }: Props) => {
   return (
     <Card
       sx={{
+        border: '0.5px solid lightgray',
         maxWidth: 350,
         padding: '0.7rem',
+        borderRadius: '1rem',
       }}
     >
       <CardContent sx={{ maxHeight: 350, overflow: 'hidden' }}>
-        <Typography gutterBottom variant='h5' component='p'>
+        <Typography
+          textOverflow='ellipsis'
+          overflow='hidden'
+          whiteSpace='nowrap'
+          gutterBottom
+          variant='h5'
+          component='p'
+        >
           {title}
         </Typography>
 
@@ -62,7 +65,14 @@ const Note = ({ title, description }: Props) => {
       </CardContent>
 
       <Box display='flex' justifyContent='space-between' alignItems='center'>
-        <Button startIcon={<EditIcon />}>Edit</Button>
+        <Box display='flex' justifyContent='space-between' alignItems='center'>
+          <IconButton color='primary'>
+            <EyeIcon />
+          </IconButton>
+          <IconButton color='primary'>
+            <EditIcon />
+          </IconButton>
+        </Box>
         <IconButton>
           <TrashCan color='secondary' />
         </IconButton>
