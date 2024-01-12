@@ -6,6 +6,8 @@ import {
   AuthResponse,
   NoteListResponse,
   NoteRes,
+  UpdateNotePayload,
+  UpdatePayloadResponse,
 } from './apiSlice.types';
 import { CreateNotesData } from '../../validations/notes';
 
@@ -55,6 +57,14 @@ const apiSlice = createApi({
       query: (noteId) => `/notes/${noteId}`,
       providesTags: ['Note'],
     }),
+    updateNote: builder.mutation<UpdatePayloadResponse, UpdateNotePayload>({
+      query: (payload) => ({
+        url: `/notes/${payload._id}`,
+        body: payload,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['NoteList'],
+    }),
   }),
 });
 
@@ -66,4 +76,5 @@ export const {
   useAddNoteMutation,
   useNotesQuery,
   useNoteQuery,
+  useUpdateNoteMutation,
 } = apiSlice;

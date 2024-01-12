@@ -1,19 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import LeftArrow from '@mui/icons-material/ArrowBackOutlined';
-import SaveIcon from '@mui/icons-material/Save';
+import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import 'easymde/dist/easymde.min.css';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import SimpleMDE from 'react-simplemde-editor';
+import { useUpdateNoteMutation } from '../../state/apis/apiSlice';
 import { Note as NoteData } from '../../state/apis/apiSlice.types';
 import { CreateNotesData, createNotesSchema } from '../../validations/notes';
 
-type Props = NoteData;
+type Props = NoteData & { handleClose: () => void };
 
-const UpdateNote = ({ title, description }: Props) => {
+const UpdateNote = ({ _id, title, description, handleClose }: Props) => {
+  const [updateNote, { data, isLoading, error }] = useUpdateNoteMutation();
+
   const submitHandler = (data: CreateNotesData) => {
-    console.log(data);
+    updateNote({ _id, ...data });
   };
 
   const {
@@ -28,6 +31,22 @@ const UpdateNote = ({ title, description }: Props) => {
       description,
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      toast.success('Note update successfully!');
+      handleClose();
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      const message =
+        (error as { data: { message?: string } })?.data?.message ||
+        'Unexpected error occurred!';
+      toast.error(message);
+    }
+  }, [error]);
 
   return (
     <Box>
@@ -58,12 +77,14 @@ const UpdateNote = ({ title, description }: Props) => {
           justifyContent='space-between'
           alignItems='center'
         >
-          <Button type='submit' startIcon={<SaveIcon />} variant='contained'>
-            Update
+          <Button
+            disabled={isLoading}
+            type='submit'
+            startIcon={<SaveAsIcon />}
+            variant='contained'
+          >
+            {isLoading ? 'Updating...' : 'Update'}
           </Button>
-          <Link style={{ all: 'unset' }} to='/notes'>
-            <Button startIcon={<LeftArrow />}>Back</Button>
-          </Link>
         </Box>
       </Box>
     </Box>

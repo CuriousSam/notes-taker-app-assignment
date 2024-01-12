@@ -6,10 +6,3 @@ export const createNotesSchema = yup.object({
 });
 
 export type CreateNotesData = yup.InferType<typeof createNotesSchema>;
-
-export const updateNoteSchema = yup.object({
-  title: yup.string().min(3).max(128).notRequired().label('Title'),
-  description: yup.string().notRequired().label('Description'),
-});
-
-export type UpdateNotesData = yup.InferType<typeof updateNoteSchema>;

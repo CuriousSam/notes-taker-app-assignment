@@ -98,6 +98,7 @@ const Note = ({ _id, title, description, ...rest }: Props) => {
           _id={_id}
           title={title}
           description={description}
+          handleClose={handleClose}
           {...rest}
         />
       </Dialog>

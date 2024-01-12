@@ -32,3 +32,14 @@ export type NoteListResponse = ApiRes & {
 };
 
 export type NoteRes = ApiRes & { note: Note };
+
+export type UpdateNotePayload = {
+  _id: string;
+  title?: string;
+  description?: string;
+};
+
+export type UpdatePayloadResponse = ApiRes & {
+  message: string;
+  note: Note;
+};
