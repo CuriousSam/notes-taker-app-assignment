@@ -1,14 +1,12 @@
-// import mongoose from 'mongoose';
 import { Request } from 'express';
 import catchAsync from '../middlewares/catchAsync';
 import Note, { NoteSchema } from '../models/Note';
+import CaptureError from '../utils/CaptureError';
 import httpStatus from '../utils/httpStatus';
 import {
   validateCreateNoteData,
   validateUpdateNoteData,
 } from '../validations/notes';
-import CaptureError from '../utils/CaptureError';
-// const ObjectId = mongoose.Schema.Types.ObjectId;
 
 /**
  * @route   /notes
@@ -146,7 +144,7 @@ export const updateNoteById = catchAsync(
     return res.json({
       success: true,
       statusCode: httpStatus.OK,
-      message: 'Note has been deleted!',
+      message: 'Note has been updated!',
       note: updateNote,
     });
   }
