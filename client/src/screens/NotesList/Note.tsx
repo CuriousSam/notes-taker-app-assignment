@@ -6,30 +6,67 @@ import {
   Card,
   CardContent,
   IconButton,
-  Typography
+  Typography,
 } from '@mui/material';
+import { Note as NoteData } from '../../state/apis/apiSlice.types';
+import Markdown from 'react-markdown';
 
-const Note = () => {
+type Props = NoteData;
+
+const Note = ({ title, description }: Props) => {
   return (
-    <Card sx={{ maxWidth: 350, padding: '0.7rem' }}>
-      <CardContent>
+    <Card
+      sx={{
+        maxWidth: 350,
+        padding: '0.7rem',
+      }}
+    >
+      <CardContent sx={{ maxHeight: 350, overflow: 'hidden' }}>
         <Typography gutterBottom variant='h5' component='p'>
-          Title Goes Here
+          {title}
         </Typography>
 
-        <Typography variant='body2' color='text.secondary'>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
-      </CardContent>
-      <>
-        <Box display='flex' justifyContent='space-between' alignItems='center'>
-          <Button startIcon={<EditIcon />}>Edit</Button>
-          <IconButton>
-            <TrashCan color='secondary' />
-          </IconButton>
+        <Box>
+          <Markdown
+            components={{
+              h1: ({ children }) => (
+                <Typography variant='h5' component='h1'>
+                  {children}
+                </Typography>
+              ),
+              p: ({ children }) => (
+                <Typography variant='body1' component='p'>
+                  {children}
+                </Typography>
+              ),
+              li: ({ children }) => (
+                <Typography variant='body2' component='li'>
+                  {children}
+                </Typography>
+              ),
+              ol: ({ children }) => (
+                <Box component='ol' sx={{ listStylePosition: 'inside' }}>
+                  {children}
+                </Box>
+              ),
+              ul: ({ children }) => (
+                <Box component='ul' sx={{ listStylePosition: 'inside' }}>
+                  {children}
+                </Box>
+              ),
+            }}
+          >
+            {description}
+          </Markdown>
         </Box>
-      </>
+      </CardContent>
+
+      <Box display='flex' justifyContent='space-between' alignItems='center'>
+        <Button startIcon={<EditIcon />}>Edit</Button>
+        <IconButton>
+          <TrashCan color='secondary' />
+        </IconButton>
+      </Box>
     </Card>
   );
 };
