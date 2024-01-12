@@ -4,6 +4,7 @@ import {
   getNoteById,
   getNotes,
   deleteNoteById,
+  updateNoteById,
 } from '../controllers/notes';
 import protect from '../middlewares/protect';
 import validateId from '../middlewares/validateId';
@@ -13,6 +14,7 @@ router.route('/notes').post(protect, createNote).get(protect, getNotes);
 router
   .route('/notes/:id')
   .get(protect, validateId('id'), getNoteById)
+  .put(protect, validateId('id'), updateNoteById)
   .delete(protect, validateId('id'), deleteNoteById);
 
 export default router;
