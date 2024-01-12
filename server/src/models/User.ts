@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 export interface UserSchema extends Document {
@@ -7,7 +7,13 @@ export interface UserSchema extends Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema<UserSchema>(
+interface UserMethods {
+  isCorrectPassword: (password: string) => Promise<boolean>;
+}
+
+type UserModel = Model<UserSchema, {}, UserMethods>;
+
+const userSchema = new mongoose.Schema<UserSchema, UserModel, UserMethods>(
   {
     name: {
       type: String,
@@ -43,10 +49,6 @@ userSchema.methods.isCorrectPassword = async function (password: string) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.statics.comparePasswords = async function (password, hash) {
-  return bcrypt.compare(password, hash);
-};
-
-const User = mongoose.model<UserSchema>('User', userSchema);
+const User = mongoose.model<UserSchema, UserModel>('User', userSchema);
 
 export default User;
