@@ -54,7 +54,7 @@ export const getNotes = catchAsync(
     const user = req.user;
 
     const page = parseInt(req.query?.page || '1');
-    const pageSize = 2;
+    const pageSize = 10;
 
     const notesRes = await Note.aggregate<{
       count: Count;
