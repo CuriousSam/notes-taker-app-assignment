@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import {
   Avatar,
   Box,
@@ -55,7 +55,7 @@ const Register = () => {
       }}
     >
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
+        <HowToRegIcon />
       </Avatar>
       <Typography component='h1' variant='h5'>
         Register
