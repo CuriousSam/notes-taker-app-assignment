@@ -114,3 +114,33 @@ export const getNoteById = catchAsync(
     });
   }
 );
+
+/**
+ * @route   /notes/:id
+ * @method  DELETE
+ * @access  Private
+ * @desc    Delete a note by id.
+ */
+export const deleteNoteById = catchAsync(
+  async (req: Request<{ id?: string }, {}, {}, {}>, res, next) => {
+    const note = await Note.findOne({ _id: req.params.id, user: req.user._id });
+
+    if (!note)
+      throw new CaptureError('Note does not exist', httpStatus.NOT_FOUND);
+
+    const deletion = await Note.deleteOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (deletion.deletedCount === 0)
+      throw new CaptureError('Note does not exist', httpStatus.BAD_REQUEST);
+
+    return res.json({
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Note has been deleted!',
+      note,
+    });
+  }
+);
