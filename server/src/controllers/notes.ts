@@ -92,7 +92,6 @@ export const getNotes = catchAsync(
       totalResults,
       page,
       pageSize,
-      count: notes,
       notes: notes,
     });
   }
