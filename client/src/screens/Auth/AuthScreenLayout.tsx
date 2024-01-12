@@ -1,8 +1,13 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAppSelector } from '../../state/hooks/useAppSelector';
+import { selectUser } from '../../state/features/auth';
 
 const AuthScreenLayout = () => {
+  const user = useAppSelector(selectUser);
+  if (user) return <Navigate to='/notes' />;
+
   return (
     <Grid container sx={{ height: '100vh' }}>
       <Grid

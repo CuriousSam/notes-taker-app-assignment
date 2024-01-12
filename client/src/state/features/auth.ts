@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 export type User = {
   _id: string;
@@ -40,6 +41,11 @@ const authSlice = createSlice({
     },
   },
 });
+
+/* SELECTORS */
+const userSelector = (state: RootState) => state.auth;
+
+export const selectUser = createSelector(userSelector, (auth) => auth.user);
 
 export default authSlice.reducer;
 
