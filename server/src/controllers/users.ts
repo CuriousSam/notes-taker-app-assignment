@@ -17,7 +17,7 @@ import {
 export const registerUser = catchAsync(async (req, res, next) => {
   const { data: userData, error } = await validateUserRegisterData(req.body);
   if (error)
-    return res.json({
+    return res.status(httpStatus.BAD_REQUEST).json({
       success: false,
       statusCode: httpStatus.BAD_REQUEST,
       message: error.message,
