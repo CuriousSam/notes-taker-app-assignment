@@ -6,6 +6,7 @@ import httpLogger from 'morgan';
 import connectDB from './config/db';
 import errorHandler from './middlewares/errorHandler';
 import usersRoutes from './routes/users';
+import notesRoutes from './routes/notes';
 dotenv.config();
 
 /* CONFIGURATION */
@@ -22,6 +23,7 @@ server.get(baseUrl, (_, res) => {
   return res.json({ success: true, message: 'The server is up' });
 });
 server.use(baseUrl, usersRoutes);
+server.use(baseUrl, notesRoutes);
 server.use(errorHandler);
 
 connectDB();
