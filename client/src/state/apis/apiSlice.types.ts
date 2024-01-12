@@ -9,7 +9,7 @@ export type AuthResponse = ApiRes & {
   user: User;
 };
 
-export interface Note {
+type Note = {
   user: string;
   title: string;
   description: string;
@@ -17,7 +17,7 @@ export interface Note {
   createdAt: string;
   updatedAt: string;
   __v: number;
-}
+};
 
 export type AddNoteResponse = ApiRes & {
   message: string;
@@ -30,3 +30,5 @@ export type NoteListResponse = ApiRes & {
   pageSize: number;
   notes: Note[];
 };
+
+export type NoteRes = ApiRes & { note: Note };

@@ -5,6 +5,7 @@ import {
   AddNoteResponse,
   AuthResponse,
   NoteListResponse,
+  NoteRes,
 } from './apiSlice.types';
 import { CreateNotesData } from '../../validations/notes';
 
@@ -22,7 +23,7 @@ const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['NoteList'],
+  tagTypes: ['NoteList', 'Note'],
   endpoints: (builder) => ({
     register: builder.mutation<AuthResponse, UserRegisterData>({
       query: (payload) => ({
@@ -50,6 +51,10 @@ const apiSlice = createApi({
       query: () => '/notes',
       providesTags: ['NoteList'],
     }),
+    note: builder.query<NoteRes, string>({
+      query: (noteId) => `/notes/${noteId}`,
+      providesTags: ['Note'],
+    }),
   }),
 });
 
@@ -60,4 +65,5 @@ export const {
   useLoginMutation,
   useAddNoteMutation,
   useNotesQuery,
+  useNoteQuery,
 } = apiSlice;
