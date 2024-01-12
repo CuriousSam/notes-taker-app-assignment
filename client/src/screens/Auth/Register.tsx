@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Avatar,
@@ -9,11 +10,39 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../../state/apis/apiSlice';
+import { login } from '../../state/features/auth';
+import { useAppDispatch } from '../../state/hooks/useAppDispatch';
+import { UserRegisterData, userRegisterSchema } from '../../validations/users';
 import Copyright from './Copyright';
 
 const Register = () => {
-  const submitHandler = () => {};
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [registerUser, { data, isLoading, error }] = useRegisterMutation();
+
+  const submitHandler = (userData: UserRegisterData) => {
+    registerUser(userData);
+  };
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(userRegisterSchema),
+  });
+
+  useEffect(() => {
+    if (data) {
+      dispatch(login(data.user));
+      navigate('/notes');
+    }
+  }, [data]);
+
   return (
     <Box
       sx={{
@@ -30,8 +59,30 @@ const Register = () => {
       <Typography component='h1' variant='h5'>
         Register
       </Typography>
-      <Box component='form' noValidate onSubmit={submitHandler} sx={{ mt: 1 }}>
+      <Box
+        component='form'
+        noValidate
+        onSubmit={handleSubmit(submitHandler)}
+        sx={{ mt: 1 }}
+      >
+        <Typography textAlign='center' color='red'>
+          {(error as { data: { message?: string } })?.data?.message}
+        </Typography>
         <TextField
+          {...register('name')}
+          autoFocus
+          margin='normal'
+          required
+          fullWidth
+          id='name'
+          label='Name'
+          name='name'
+          helperText={errors.name?.message?.toString()}
+          error={!!errors.name?.message}
+        />
+
+        <TextField
+          {...register('email')}
           margin='normal'
           required
           fullWidth
@@ -39,17 +90,21 @@ const Register = () => {
           label='Email Address'
           name='email'
           autoComplete='email'
-          autoFocus
+          helperText={errors.email?.message?.toString()}
+          error={!!errors.email?.message}
         />
         <TextField
           margin='normal'
           required
           fullWidth
+          {...register('password')}
           name='password'
           label='Password'
           type='password'
           id='password'
           autoComplete='current-password'
+          helperText={errors.password?.message?.toString()}
+          error={!!errors.password?.message}
         />
         <FormControlLabel
           control={<Checkbox value='remember' color='primary' />}
@@ -58,10 +113,11 @@ const Register = () => {
         <Button
           type='submit'
           fullWidth
+          disabled={isLoading}
           variant='contained'
           sx={{ mt: 3, mb: 2 }}
         >
-          Register
+          {isLoading ? 'Please wait...' : 'Register'}
         </Button>
         <Grid container>
           <Grid item xs>

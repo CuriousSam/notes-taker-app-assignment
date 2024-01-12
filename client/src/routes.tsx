@@ -12,6 +12,10 @@ const router = createBrowserRouter([
       { path: 'register', element: <Register /> },
     ],
   },
+  {
+    path: '/notes',
+    element: <h1>Homes screen</h1>
+  }
 ]);
 
 export default router;

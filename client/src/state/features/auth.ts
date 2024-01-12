@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-type User = {
+export type User = {
   _id: string;
   name: string;
   email: string;
@@ -12,9 +12,12 @@ type AuthState = {
   user: User | null;
 };
 
+const userJSONString = localStorage.getItem('user') ?? 'null';
+const userData: User | null = JSON.parse(userJSONString);
+
 const initialLoginState: AuthState = {
-  isLoggedIn: false,
-  user: null,
+  isLoggedIn: !!userData,
+  user: userData,
 };
 
 const authSlice = createSlice({
@@ -22,12 +25,18 @@ const authSlice = createSlice({
   initialState: initialLoginState,
   reducers: {
     login: (state, action: PayloadAction<User>) => {
-      state.isLoggedIn = true;
-      state.user = action.payload;
+      if (action.payload?.accessToken) {
+        state.isLoggedIn = true;
+        state.user = action.payload;
+        localStorage.setItem('user', JSON.stringify(action.payload));
+        localStorage.setItem('accessToken', action.payload.accessToken);
+      }
     },
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = null;
+      localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
     },
   },
 });
