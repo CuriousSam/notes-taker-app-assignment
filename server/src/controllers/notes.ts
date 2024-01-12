@@ -1,7 +1,10 @@
+// import mongoose from 'mongoose';
+import { Request } from 'express';
 import catchAsync from '../middlewares/catchAsync';
-import Note from '../models/Note';
+import Note, { NoteSchema } from '../models/Note';
 import httpStatus from '../utils/httpStatus';
 import { validateCreateNoteData } from '../validations/notes';
+// const ObjectId = mongoose.Schema.Types.ObjectId;
 
 /**
  * @route   /notes
@@ -29,3 +32,62 @@ export const createNote = catchAsync(async (req, res, next) => {
     note: newNote,
   });
 });
+
+interface NotesQueryParams {
+  page?: string;
+}
+
+type Count = [{ count: number }];
+
+/**
+ * @route   /notes
+ * @method  GET
+ * @access  Private
+ * @desc    Get list of notes for current logged in user.
+ */
+export const getNotes = catchAsync(
+  async (req: Request<{}, {}, {}, NotesQueryParams>, res, next) => {
+    const user = req.user;
+
+    const page = parseInt(req.query?.page || '1');
+    const pageSize = 2;
+
+    const notesRes = await Note.aggregate<{ count: Count; notes: NoteSchema[] }>([
+      {
+        $match: {
+          user: user._id,
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $facet: {
+          count: [{ $count: 'count' }],
+          notes: [
+            {
+              $skip: (page - 1) * pageSize,
+            },
+            {
+              $limit: pageSize,
+            },
+          ],
+        },
+      },
+    ]);
+
+    console.log({ ct: notesRes[0].count[0]?.count });
+    const totalResults = notesRes[0].count[0]?.count ?? 0;
+    const notes = notesRes[0].notes ?? [];
+
+    return res.status(httpStatus.CREATED).json({
+      success: true,
+      statusCode: httpStatus.CREATED,
+      totalResults,
+      page,
+      pageSize,
+      count: notes,
+      notes: notes,
+    });
+  }
+);
