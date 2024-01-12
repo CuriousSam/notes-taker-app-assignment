@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Avatar,
@@ -9,11 +10,38 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLoginMutation } from '../../state/apis/apiSlice';
+import { login } from '../../state/features/auth';
+import { useAppDispatch } from '../../state/hooks/useAppDispatch';
+import { UserLoginData, userLoginSchema } from '../../validations/users';
 import Copyright from './Copyright';
 
 const Login = () => {
-  const submitHandler = () => {};
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [loginUser, { data, isLoading, error }] = useLoginMutation();
+
+  const submitHandler = (userData: UserLoginData) => {
+    loginUser(userData);
+  };
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(userLoginSchema),
+  });
+
+  useEffect(() => {
+    if (data) {
+      dispatch(login(data.user));
+      navigate('/notes');
+    }
+  }, [data]);
 
   return (
     <Box
@@ -31,8 +59,17 @@ const Login = () => {
       <Typography component='h1' variant='h5'>
         Log In
       </Typography>
-      <Box component='form' noValidate onSubmit={submitHandler} sx={{ mt: 1 }}>
+      <Box
+        component='form'
+        noValidate
+        onSubmit={handleSubmit(submitHandler)}
+        sx={{ mt: 1 }}
+      >
+        <Typography textAlign='center' color='red'>
+          {(error as { data: { message?: string } })?.data?.message}
+        </Typography>
         <TextField
+          {...register('email')}
           margin='normal'
           required
           fullWidth
@@ -41,8 +78,11 @@ const Login = () => {
           name='email'
           autoComplete='email'
           autoFocus
+          helperText={errors.email?.message?.toString()}
+          error={!!errors.email}
         />
         <TextField
+          {...register('password')}
           margin='normal'
           required
           fullWidth
@@ -51,6 +91,8 @@ const Login = () => {
           type='password'
           id='password'
           autoComplete='current-password'
+          helperText={errors.password?.message?.toString()}
+          error={!!errors.password}
         />
         <FormControlLabel
           control={<Checkbox value='remember' color='primary' />}
@@ -59,10 +101,11 @@ const Login = () => {
         <Button
           type='submit'
           fullWidth
+          disabled={isLoading}
           variant='contained'
           sx={{ mt: 3, mb: 2 }}
         >
-          Login
+          {isLoading ? 'Please wait...' : 'Login'}
         </Button>
         <Grid container>
           <Grid item xs>

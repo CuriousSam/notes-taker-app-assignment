@@ -26,3 +26,5 @@ export const userLoginSchema = yup.object({
     .label('E-mail'),
   password: yup.string().min(6).required().label('Password'),
 });
+
+export type UserLoginData = yup.InferType<typeof userLoginSchema>;

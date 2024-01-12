@@ -5,6 +5,6 @@ export type ApiRes = {
   statusCode: number;
 };
 
-export type RegisterRes = ApiRes & {
+export type AuthResponse = ApiRes & {
   user: User;
 };

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
-import { UserRegisterData } from '../../validations/users';
-import { RegisterRes } from './apiSlice.types';
+import { UserLoginData, UserRegisterData } from '../../validations/users';
+import { AuthResponse } from './apiSlice.types';
 
 const apiSlice = createApi({
   reducerPath: 'api',
@@ -18,12 +18,23 @@ const apiSlice = createApi({
     },
   }),
   endpoints: (builder) => ({
-    register: builder.mutation<RegisterRes, UserRegisterData>({
-      query: (payload) => ({ url: '/users/register', body: payload, method: 'POST' }),
+    register: builder.mutation<AuthResponse, UserRegisterData>({
+      query: (payload) => ({
+        url: '/users/register',
+        body: payload,
+        method: 'POST',
+      }),
+    }),
+    login: builder.mutation<AuthResponse, UserLoginData>({
+      query: (payload) => ({
+        url: '/users/login',
+        body: payload,
+        method: 'POST',
+      }),
     }),
   }),
 });
 
 export default apiSlice;
 
-export const { useRegisterMutation } = apiSlice;
+export const { useRegisterMutation, useLoginMutation } = apiSlice;
