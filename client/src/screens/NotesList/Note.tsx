@@ -2,13 +2,25 @@ import TrashCan from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import Dialog from '../../components/Dialog';
 import Markdown from 'react-markdown';
 import { Note as NoteData } from '../../state/apis/apiSlice.types';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import UpdateNote from '../UpdateNote';
 
 type Props = NoteData;
 
-const Note = ({ _id, title, description }: Props) => {
+const Note = ({ _id, title, description, ...rest }: Props) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Card
       sx={{
@@ -72,7 +84,7 @@ const Note = ({ _id, title, description }: Props) => {
               <EyeIcon />
             </IconButton>
           </Link>
-          <IconButton color='primary'>
+          <IconButton onClick={handleClickOpen} color='primary'>
             <EditIcon />
           </IconButton>
         </Box>
@@ -80,6 +92,15 @@ const Note = ({ _id, title, description }: Props) => {
           <TrashCan color='secondary' />
         </IconButton>
       </Box>
+
+      <Dialog open={open} handleClose={handleClose} title='Edit Note'>
+        <UpdateNote
+          _id={_id}
+          title={title}
+          description={description}
+          {...rest}
+        />
+      </Dialog>
     </Card>
   );
 };

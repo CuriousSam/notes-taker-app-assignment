@@ -9,7 +9,7 @@ export type AuthResponse = ApiRes & {
   user: User;
 };
 
-type Note = {
+export type Note = {
   user: string;
   title: string;
   description: string;
