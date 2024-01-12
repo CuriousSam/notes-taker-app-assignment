@@ -33,15 +33,19 @@ export const registerUser = catchAsync(async (req, res, next) => {
   const newUser = new User(userData);
   await newUser.save();
 
+  const userPayload = {
+    _id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+  };
+  const accessToken = signAccessToken(userPayload);
+  res.header('x-access-token', accessToken);
+
   return res.status(httpStatus.CREATED).json({
     success: true,
     statusCode: httpStatus.CREATED,
     message: 'User registration successful',
-    user: {
-      _id: newUser._id,
-      name: newUser.name,
-      email: newUser.email,
-    },
+    user: { ...userPayload, accessToken },
   });
 });
 
