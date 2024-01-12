@@ -5,8 +5,19 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../state/features/auth';
+import { useAppDispatch } from '../../state/hooks/useAppDispatch';
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
@@ -23,7 +34,9 @@ const Navbar = () => {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             Notes Taker
           </Typography>
-          <Button color='inherit'>Log Out</Button>
+          <Button onClick={handleLogout} color='inherit'>
+            Log Out
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
