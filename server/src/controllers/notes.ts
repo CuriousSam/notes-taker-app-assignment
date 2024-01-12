@@ -4,6 +4,7 @@ import catchAsync from '../middlewares/catchAsync';
 import Note, { NoteSchema } from '../models/Note';
 import httpStatus from '../utils/httpStatus';
 import { validateCreateNoteData } from '../validations/notes';
+import CaptureError from '../utils/CaptureError';
 // const ObjectId = mongoose.Schema.Types.ObjectId;
 
 /**
@@ -52,7 +53,10 @@ export const getNotes = catchAsync(
     const page = parseInt(req.query?.page || '1');
     const pageSize = 2;
 
-    const notesRes = await Note.aggregate<{ count: Count; notes: NoteSchema[] }>([
+    const notesRes = await Note.aggregate<{
+      count: Count;
+      notes: NoteSchema[];
+    }>([
       {
         $match: {
           user: user._id,
@@ -88,6 +92,26 @@ export const getNotes = catchAsync(
       pageSize,
       count: notes,
       notes: notes,
+    });
+  }
+);
+
+/**
+ * @route   /notes/:id
+ * @method  GET
+ * @access  Private
+ * @desc    Get notes details.
+ */
+export const getNoteById = catchAsync(
+  async (req: Request<{ id?: string }, {}, {}, {}>, res, next) => {
+    const note = await Note.findOne({ _id: req.params.id, user: req.user._id });
+    if (!note)
+      throw new CaptureError('Note does not exist', httpStatus.NOT_FOUND);
+
+    return res.json({
+      success: true,
+      statusCode: httpStatus.OK,
+      note,
     });
   }
 );
