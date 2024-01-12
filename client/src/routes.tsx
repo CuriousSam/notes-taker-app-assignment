@@ -4,6 +4,7 @@ import AuthScreenLayout from './screens/Auth/AuthScreenLayout';
 import Login from './screens/Auth/Login';
 import Register from './screens/Auth/Register';
 import { Layout } from './screens/Layout';
+import Notes from './screens/Notes';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/notes',
-            element: <h1>Notes</h1>,
+            element: <Notes />,
+          },
+          {
+            path: '/notes/new',
+            element: <h1>Add a new note</h1>,
           },
         ],
       },
