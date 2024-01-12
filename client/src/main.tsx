@@ -1,16 +1,20 @@
+import { createTheme } from '@mui/material';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
-import './styles/index.css';
 import router from './routes';
-import { createTheme } from '@mui/material';
+import store from './state/store';
+import './styles/index.css';
 import { themeOptions } from './theme';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider theme={createTheme(themeOptions)}>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={createTheme(themeOptions)}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
