@@ -8,7 +8,7 @@ type AccessTokenPayload = {
 
 export const signAccessToken = (payload: Object) => {
   const secret = process.env.ACCESS_TOKEN_SECRET;
-  const token = jwt.sign(payload, secret!, { expiresIn: '5m' });
+  const token = jwt.sign(payload, secret!, { expiresIn: '30d' });
 
   return token;
 };
