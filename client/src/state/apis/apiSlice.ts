@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 import { UserLoginData, UserRegisterData } from '../../validations/users';
-import { AuthResponse } from './apiSlice.types';
+import { AddNoteResponse, AuthResponse } from './apiSlice.types';
+import { CreateNotesData } from '../../validations/notes';
 
 const apiSlice = createApi({
   reducerPath: 'api',
@@ -32,9 +33,17 @@ const apiSlice = createApi({
         method: 'POST',
       }),
     }),
+    addNote: builder.mutation<AddNoteResponse, CreateNotesData>({
+      query: (payload) => ({
+        url: '/notes',
+        body: payload,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
 export default apiSlice;
 
-export const { useRegisterMutation, useLoginMutation } = apiSlice;
+export const { useRegisterMutation, useLoginMutation, useAddNoteMutation } =
+  apiSlice;

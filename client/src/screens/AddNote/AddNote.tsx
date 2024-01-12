@@ -3,22 +3,45 @@ import LeftArrow from '@mui/icons-material/ArrowBackOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import 'easymde/dist/easymde.min.css';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import SimpleMDE from 'react-simplemde-editor';
-import { CreateNotesData, createNotesSchema } from '../../validations/notes';
+import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import SimpleMDE from 'react-simplemde-editor';
+import { useAddNoteMutation } from '../../state/apis/apiSlice';
+import { CreateNotesData, createNotesSchema } from '../../validations/notes';
 
 const AddNote = () => {
+  const [addNote, { data, isLoading, error }] = useAddNoteMutation();
+
   const submitHandler = (data: CreateNotesData) => {
     console.log(data);
+    addNote(data);
   };
 
   const {
     register,
+    reset,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({ resolver: yupResolver(createNotesSchema) });
+
+  useEffect(() => {
+    if (data) {
+      reset();
+      toast.success('Note saved!');
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      const message =
+        (error as { data: { message: string } })?.data?.message ||
+        'Something went wrong!';
+      toast.error(message);
+    }
+  }, [error]);
 
   return (
     <section>
@@ -60,8 +83,13 @@ const AddNote = () => {
           justifyContent='space-between'
           alignItems='center'
         >
-          <Button type='submit' startIcon={<SaveIcon />} variant='contained'>
-            Save
+          <Button
+            disabled={isLoading}
+            type='submit'
+            startIcon={<SaveIcon />}
+            variant='contained'
+          >
+            {isLoading ? 'Saving...' : 'Save'}
           </Button>
           <Link style={{ all: 'unset' }} to='/notes'>
             <Button startIcon={<LeftArrow />}>Back</Button>
