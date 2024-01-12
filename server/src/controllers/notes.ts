@@ -80,13 +80,12 @@ export const getNotes = catchAsync(
       },
     ]);
 
-    console.log({ ct: notesRes[0].count[0]?.count });
     const totalResults = notesRes[0].count[0]?.count ?? 0;
     const notes = notesRes[0].notes ?? [];
 
-    return res.status(httpStatus.CREATED).json({
+    return res.json({
       success: true,
-      statusCode: httpStatus.CREATED,
+      statusCode: httpStatus.OK,
       totalResults,
       page,
       pageSize,
