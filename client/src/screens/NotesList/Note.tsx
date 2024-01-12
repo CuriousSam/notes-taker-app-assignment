@@ -4,10 +4,11 @@ import EyeIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import Markdown from 'react-markdown';
 import { Note as NoteData } from '../../state/apis/apiSlice.types';
+import { Link } from 'react-router-dom';
 
 type Props = NoteData;
 
-const Note = ({ title, description }: Props) => {
+const Note = ({ _id, title, description }: Props) => {
   return (
     <Card
       sx={{
@@ -66,9 +67,11 @@ const Note = ({ title, description }: Props) => {
 
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <Box display='flex' justifyContent='space-between' alignItems='center'>
-          <IconButton color='primary'>
-            <EyeIcon />
-          </IconButton>
+          <Link to={`/notes/${_id}`}>
+            <IconButton color='primary'>
+              <EyeIcon />
+            </IconButton>
+          </Link>
           <IconButton color='primary'>
             <EditIcon />
           </IconButton>

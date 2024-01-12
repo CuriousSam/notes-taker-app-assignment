@@ -6,6 +6,7 @@ import Register from './screens/Auth/Register';
 import { Layout } from './screens/Layout';
 import Notes from './screens/Notes';
 import { AddNote } from './screens/AddNote';
+import NoteDetails from './screens/NoteDetails';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
           {
             path: '/notes/new',
             element: <AddNote />,
+          },
+          {
+            path: '/notes/:id',
+            element: <NoteDetails />,
           },
         ],
       },
