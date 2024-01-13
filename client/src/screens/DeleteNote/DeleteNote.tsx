@@ -1,11 +1,32 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { useDeleteNoteMutation } from '../../state/apis/apiSlice';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
-type Props = { _id: string; cancelDelete: () => void };
+type Props = { _id: string; closeDeleteModal: () => void };
 
-const DeleteNote = ({ _id, cancelDelete }: Props) => {
+const DeleteNote = ({ _id, closeDeleteModal: cancelDelete }: Props) => {
+  const [deleteNote, { data, isLoading, error }] = useDeleteNoteMutation();
+
   const handleDelete = () => {
-    console.log('Deleting...', _id);
+    deleteNote(_id);
   };
+
+  useEffect(() => {
+    if (data) {
+      cancelDelete();
+      toast.success('Note deleted successfully!');
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      const message =
+        (error as { data: { message?: string } })?.data?.message ||
+        'Unexpected error occurred!';
+      toast.success(message);
+    }
+  }, [error]);
 
   return (
     <div>
@@ -13,11 +34,21 @@ const DeleteNote = ({ _id, cancelDelete }: Props) => {
         Are you sure want to delete this note?
       </Typography>
       <Stack justifyContent='center' direction='row' mt={2} gap={2}>
-        <Button onClick={cancelDelete} variant='outlined' color='success'>
+        <Button
+          disabled={isLoading}
+          onClick={cancelDelete}
+          variant='outlined'
+          color='success'
+        >
           Cancel
         </Button>
-        <Button onClick={handleDelete} variant='contained' color='error'>
-          Delete
+        <Button
+          disabled={isLoading}
+          onClick={handleDelete}
+          variant='contained'
+          color='error'
+        >
+          {isLoading ? 'Deleting...' : 'Delete'}
         </Button>
       </Stack>
     </div>

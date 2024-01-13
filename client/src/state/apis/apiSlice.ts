@@ -1,15 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
+import { CreateNotesData } from '../../validations/notes';
 import { UserLoginData, UserRegisterData } from '../../validations/users';
+import { RootState } from '../store';
 import {
   AddNoteResponse,
   AuthResponse,
+  DeleNoteResponse,
   NoteListResponse,
   NoteRes,
   UpdateNotePayload,
-  UpdatePayloadResponse,
+  UpdateNoteResponse,
 } from './apiSlice.types';
-import { CreateNotesData } from '../../validations/notes';
 
 const apiSlice = createApi({
   reducerPath: 'api',
@@ -57,11 +58,18 @@ const apiSlice = createApi({
       query: (noteId) => `/notes/${noteId}`,
       providesTags: ['Note'],
     }),
-    updateNote: builder.mutation<UpdatePayloadResponse, UpdateNotePayload>({
+    updateNote: builder.mutation<UpdateNoteResponse, UpdateNotePayload>({
       query: (payload) => ({
         url: `/notes/${payload._id}`,
         body: payload,
         method: 'PUT',
+      }),
+      invalidatesTags: ['NoteList'],
+    }),
+    deleteNote: builder.mutation<DeleNoteResponse, string>({
+      query: (noteId) => ({
+        url: `/notes/${noteId}`,
+        method: 'DELETE',
       }),
       invalidatesTags: ['NoteList'],
     }),
@@ -77,4 +85,5 @@ export const {
   useNotesQuery,
   useNoteQuery,
   useUpdateNoteMutation,
+  useDeleteNoteMutation,
 } = apiSlice;

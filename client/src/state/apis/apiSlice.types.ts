@@ -39,7 +39,12 @@ export type UpdateNotePayload = {
   description?: string;
 };
 
-export type UpdatePayloadResponse = ApiRes & {
+export type UpdateNoteResponse = ApiRes & {
+  message: string;
+  note: Note;
+};
+
+export type DeleNoteResponse = ApiRes & {
   message: string;
   note: Note;
 };

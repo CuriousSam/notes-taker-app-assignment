@@ -122,7 +122,7 @@ const Note = ({ _id, title, description, ...rest }: Props) => {
         handleClose={handleCloseDeleteNoteModal}
         title='Delete Note'
       >
-        <DeleteNote _id={_id} cancelDelete={handleCloseDeleteNoteModal} />
+        <DeleteNote _id={_id} closeDeleteModal={handleCloseDeleteNoteModal} />
       </Dialog>
     </Card>
   );
