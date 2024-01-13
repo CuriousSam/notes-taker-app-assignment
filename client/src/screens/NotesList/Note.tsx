@@ -8,17 +8,28 @@ import { Note as NoteData } from '../../state/apis/apiSlice.types';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import UpdateNote from '../UpdateNote';
+import DeleteNote from '../DeleteNote';
 
 type Props = NoteData;
 
 const Note = ({ _id, title, description, ...rest }: Props) => {
-  const [open, setOpen] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDeleteNoteModal, setOpenDeleteNoteModal] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+  };
+
+  const handleOpenDeleteNoteModal = () => {
+    setOpenDeleteNoteModal(true);
+  };
+
+  const handleCloseDeleteNoteModal = () => {
+    setOpenDeleteNoteModal(false);
   };
 
   return (
@@ -84,23 +95,34 @@ const Note = ({ _id, title, description, ...rest }: Props) => {
               <EyeIcon />
             </IconButton>
           </Link>
-          <IconButton onClick={handleClickOpen} color='primary'>
+          <IconButton onClick={handleOpenEditModal} color='primary'>
             <EditIcon />
           </IconButton>
         </Box>
-        <IconButton>
+        <IconButton onClick={handleOpenDeleteNoteModal}>
           <TrashCan color='secondary' />
         </IconButton>
       </Box>
 
-      <Dialog open={open} handleClose={handleClose} title='Edit Note'>
+      <Dialog
+        open={openEditModal}
+        handleClose={handleCloseEditModal}
+        title='Edit Note'
+      >
         <UpdateNote
           _id={_id}
           title={title}
           description={description}
-          handleClose={handleClose}
+          handleClose={handleCloseEditModal}
           {...rest}
         />
+      </Dialog>
+      <Dialog
+        open={openDeleteNoteModal}
+        handleClose={handleCloseDeleteNoteModal}
+        title='Delete Note'
+      >
+        <DeleteNote _id={_id} cancelDelete={handleCloseDeleteNoteModal} />
       </Dialog>
     </Card>
   );
