@@ -2,13 +2,18 @@ import LeftArrow from '@mui/icons-material/ArrowBackOutlined';
 import { Box, Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import Markdown from 'react-markdown';
 import { Link, useParams } from 'react-router-dom';
+import Alert from '../../components/Alert';
 import { useNoteQuery } from '../../state/apis/apiSlice';
 import NoteDetailsLoading from './NoteDetailsLoading';
 
 const NoteDetails = () => {
   const params = useParams<{ id: string }>();
 
-  const { data, isLoading } = useNoteQuery(params.id ?? '');
+  const { data, isLoading, error } = useNoteQuery(params.id ?? '');
+
+  const errorMessage =
+    (error as { data?: { message?: string } })?.data?.message ||
+    'Unexpected error occurred!';
 
   if (isLoading) return <NoteDetailsLoading />;
 
@@ -18,7 +23,9 @@ const NoteDetails = () => {
         <Button startIcon={<LeftArrow />}>Back</Button>
       </Link>
 
-      {data && (
+      {error ? (
+        <Alert title='Error' severity='error' description={errorMessage} />
+      ) : data ? (
         <Box mt={1} border='1px solid lightgray' p={4} borderRadius={5}>
           <Typography variant='h3'>{data.note.title}</Typography>
           <Stack my={1} direction='row' flexWrap='wrap' gap='0.5rem 1rem'>
@@ -70,7 +77,7 @@ const NoteDetails = () => {
             {data?.note.description}
           </Markdown>
         </Box>
-      )}
+      ) : null}
     </Box>
   );
 };

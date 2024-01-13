@@ -1,13 +1,20 @@
 import Masonry from '@mui/lab/Masonry';
 import { Box } from '@mui/material';
+import Alert from '../../components/Alert';
 import { useNotesQuery } from '../../state/apis/apiSlice';
 import Note from './Note';
 import NotesListLoading from './NoteListLoading';
 
 const NotesList = () => {
-  const { data, isLoading } = useNotesQuery();
+  const { data, isLoading, error } = useNotesQuery();
 
   if (isLoading) return <NotesListLoading />;
+
+  const errorMessage =
+    (error as { data?: { message?: string } })?.data?.message ||
+    'Unexpected error occurred!';
+  if (error)
+    return <Alert title='Error' severity='error' description={errorMessage} />;
 
   return (
     <Box mt={3}>
