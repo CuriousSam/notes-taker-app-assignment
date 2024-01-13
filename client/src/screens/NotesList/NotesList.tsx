@@ -1,10 +1,13 @@
-import { Box } from '@mui/material';
-import Note from './Note';
-import { useNotesQuery } from '../../state/apis/apiSlice';
 import Masonry from '@mui/lab/Masonry';
+import { Box } from '@mui/material';
+import { useNotesQuery } from '../../state/apis/apiSlice';
+import Note from './Note';
+import NotesListLoading from './NoteListLoading';
 
 const NotesList = () => {
-  const { data } = useNotesQuery();
+  const { data, isLoading } = useNotesQuery();
+
+  if (isLoading) return <NotesListLoading />;
 
   return (
     <Box mt={3}>
