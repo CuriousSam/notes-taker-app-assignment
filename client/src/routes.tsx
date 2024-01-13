@@ -1,12 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { RequireAuth } from './components/RequireAuth';
-import AuthScreenLayout from './screens/Auth/AuthScreenLayout';
-import Login from './screens/Auth/Login';
-import Register from './screens/Auth/Register';
-import { Layout } from './screens/Layout';
-import Notes from './screens/Notes';
-import { AddNote } from './screens/AddNote';
+import RequireAuth from './components/RequireAuth';
+import AddNote from './screens/AddNote';
+import AuthScreenLayout, { Login, Register } from './screens/Auth';
+import Layout from './screens/Layout';
 import NoteDetails from './screens/NoteDetails';
+import Notes from './screens/Notes';
 
 const router = createBrowserRouter([
   {

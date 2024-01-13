@@ -1,5 +1,5 @@
-import { Box, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import NotesList from '../NotesList';
 

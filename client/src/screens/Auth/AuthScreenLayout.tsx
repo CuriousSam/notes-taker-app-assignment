@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from '../../state/hooks/useAppSelector';
 import { selectUser } from '../../state/features/auth';
+import { useAppSelector } from '../../state/hooks/useAppSelector';
 
 const AuthScreenLayout = () => {
   const user = useAppSelector(selectUser);

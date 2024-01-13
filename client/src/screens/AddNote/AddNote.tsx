@@ -15,7 +15,6 @@ const AddNote = () => {
   const [addNote, { data, isLoading, error }] = useAddNoteMutation();
 
   const submitHandler = (data: CreateNotesData) => {
-    console.log(data);
     addNote(data);
   };
 

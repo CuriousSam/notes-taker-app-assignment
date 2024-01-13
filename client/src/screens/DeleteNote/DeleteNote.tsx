@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { useDeleteNoteMutation } from '../../state/apis/apiSlice';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { useDeleteNoteMutation } from '../../state/apis/apiSlice';
 
 type Props = { _id: string; closeDeleteModal: () => void };
 

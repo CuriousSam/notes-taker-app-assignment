@@ -2,13 +2,13 @@ import TrashCan from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
-import Dialog from '../../components/Dialog';
-import Markdown from 'react-markdown';
-import { Note as NoteData } from '../../state/apis/apiSlice.types';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import UpdateNote from '../UpdateNote';
+import Markdown from 'react-markdown';
+import { Link } from 'react-router-dom';
+import Dialog from '../../components/Dialog';
+import { Note as NoteData } from '../../state/apis/apiSlice.types';
 import DeleteNote from '../DeleteNote';
+import UpdateNote from '../UpdateNote';
 
 type Props = NoteData;
 

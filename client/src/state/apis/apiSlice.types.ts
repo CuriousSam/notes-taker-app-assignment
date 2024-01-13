@@ -3,6 +3,7 @@ import { User } from '../features/auth';
 export type ApiRes = {
   success: boolean;
   statusCode: number;
+  message?: string;
 };
 
 export type AuthResponse = ApiRes & {
@@ -31,7 +32,7 @@ export type NoteListResponse = ApiRes & {
   notes: Note[];
 };
 
-export type NoteRes = ApiRes & { note: Note };
+export type NoteResponse = ApiRes & { note: Note };
 
 export type UpdateNotePayload = {
   _id: string;

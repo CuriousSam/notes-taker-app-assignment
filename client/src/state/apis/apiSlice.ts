@@ -7,7 +7,7 @@ import {
   AuthResponse,
   DeleNoteResponse,
   NoteListResponse,
-  NoteRes,
+  NoteResponse,
   UpdateNotePayload,
   UpdateNoteResponse,
 } from './apiSlice.types';
@@ -54,7 +54,7 @@ const apiSlice = createApi({
       query: () => '/notes',
       providesTags: ['NoteList'],
     }),
-    note: builder.query<NoteRes, string>({
+    note: builder.query<NoteResponse, string>({
       query: (noteId) => `/notes/${noteId}`,
       providesTags: ['Note'],
     }),
