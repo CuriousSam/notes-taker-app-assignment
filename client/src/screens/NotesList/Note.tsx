@@ -36,7 +36,6 @@ const Note = ({ _id, title, description, ...rest }: Props) => {
     <Card
       sx={{
         border: '0.5px solid lightgray',
-        maxWidth: 350,
         padding: '0.7rem',
         borderRadius: '1rem',
       }}
