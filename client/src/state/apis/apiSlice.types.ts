@@ -27,8 +27,6 @@ export type AddNoteResponse = ApiRes & {
 
 export type NoteListResponse = ApiRes & {
   totalResults: number;
-  page: number;
-  pageSize: number;
   notes: Note[];
 };
 

@@ -51,9 +51,6 @@ export const getNotes = catchAsync(
   async (req: Request<{}, {}, {}, NotesQueryParams>, res, next) => {
     const user = req.user;
 
-    const page = parseInt(req.query?.page || '1');
-    const pageSize = 10;
-
     const notesRes = await Note.aggregate<{
       count: Count;
       notes: NoteSchema[];
@@ -69,14 +66,7 @@ export const getNotes = catchAsync(
       {
         $facet: {
           count: [{ $count: 'count' }],
-          notes: [
-            {
-              $skip: (page - 1) * pageSize,
-            },
-            {
-              $limit: pageSize,
-            },
-          ],
+          notes: [],
         },
       },
     ]);
@@ -88,8 +78,6 @@ export const getNotes = catchAsync(
       success: true,
       statusCode: httpStatus.OK,
       totalResults,
-      page,
-      pageSize,
       notes: notes,
     });
   }
