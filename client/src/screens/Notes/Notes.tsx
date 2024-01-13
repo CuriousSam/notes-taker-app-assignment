@@ -6,11 +6,11 @@ import NotesList from '../NotesList';
 const Notes = () => {
   return (
     <Box component='section'>
-      <Button variant='outlined' startIcon={<AddIcon />}>
-        <Link style={{ all: 'unset' }} to='/notes/new'>
+      <Link style={{ all: 'unset' }} to='/notes/new'>
+        <Button variant='contained' startIcon={<AddIcon />}>
           New Note
-        </Link>
-      </Button>
+        </Button>
+      </Link>
 
       <NotesList />
     </Box>
